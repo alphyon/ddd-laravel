@@ -32,6 +32,7 @@ services:
       PHP_MEMORY_LIMIT: '512M'
       COMPOSER_MEMORY_LIMIT: '-1'
       PHP_IDE_CONFIG: 'serverName=debug${PROJECT_NAME}'
+    user: 1000:1000
     volumes:
       - './:/var/www/vhost/html:cached'
       - './docker/php/config/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini'

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use File;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -31,12 +32,17 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/api.php'));
+            Route::middleware('api')->prefix('api')->group(base_path('routes/api.php'));
 
-            Route::middleware('web')
-                ->group(base_path('routes/web.php'));
+            Route::middleware('web')->group(base_path('routes/web.php'));
+
+            /**
+             * load BoundedContext route
+             */
+            foreach (File::allFiles(base_path('src/BoundedContext/**/Infrastructure/routes')) as $routeFile) {
+                $type = explode('.', $routeFile->getBasename())[0];
+                Route::prefix($type)->middleware($type)->group($routeFile->getRealPath());
+            }
         });
     }
 

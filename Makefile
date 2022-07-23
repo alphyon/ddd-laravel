@@ -20,6 +20,8 @@ optimize:
 	@docker exec $(PROJECT_NAME)_php php artisan optimize
 analyse:
 	./vendor/bin/phpstan analyse
+pint:
+	./vendor/bin/pint
 generate:
 	@docker exec $(PROJECT_NAME)_php php artisan ide-helper:models --write
 nginx:
